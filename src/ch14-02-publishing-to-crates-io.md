@@ -1,30 +1,31 @@
 ## Publishing a Crate to Crates.io
 
-We’ve used packages from [crates.io](https://crates.io/)<!-- ignore --> as
-dependencies of our project, but you can also share your code with other people
-by publishing your own packages. The crate registry at
-[crates.io](https://crates.io/)<!-- ignore --> distributes the source code of
-your packages, so it primarily hosts code that is open source.
+Chúng ta đã sử dụng các gói từ [crates.io](https://crates.io/)<!-- ignore --> như các 
+phụ thuộc cho dự án của chúng ta, nhưng bạn cũng có thể chia sẻ mã code của mình 
+với những người khác bằng cách xuất bản các package của mình.
+Crate được đăng ký tại [crates.io](https://crates.io/)<!-- ignore -->
+phân phối mã nguồn của các package của bạn, vì vậy nó chủ yếu lưu trữ mã nguồn mở.
 
-Rust and Cargo have features that help make your published package easier for
-people to use and to find in the first place. We’ll talk about some of these
-features next and then explain how to publish a package.
+Rust và Cargo có tính năng này giúp bạn có thể đóng gói và xuất bản mã nguồn của mình một cách
+ dễ dàng hơn cho mọi người sử dụng và tìm thấy ngay đầu tiên.
+Chúng ta sẽ nói về một số tính năng này và sau đó giải thích cách xuất bản một package.
 
-### Making Useful Documentation Comments
 
-Accurately documenting your packages will help other users know how and when to
-use them, so it’s worth investing the time to write documentation. In Chapter
-3, we discussed how to comment Rust code using two slashes, `//`. Rust also has
-a particular kind of comment for documentation, known conveniently as a
-*documentation comment*, that will generate HTML documentation. The HTML
-displays the contents of documentation comments for public API items intended
-for programmers interested in knowing how to *use* your crate as opposed to how
-your crate is *implemented*.
+### Tạo tài liệu Comments hữu ích
 
-Documentation comments use three slashes, `///`, instead of two and support
-Markdown notation for formatting the text. Place documentation comments just
-before the item they’re documenting. Listing 14-1 shows documentation comments
-for an `add_one` function in a crate named `my_crate`.
+Việc ghi lại chính xác các gói của bạn sẽ giúp những người dùng khác biết cách thức và thời điểm sử dụng chúng,
+vì vậy đáng đầu tư thời gian để viết tài liệu này. Trong Chương 3,
+chúng ta đã thảo luận về cách nhận xét mã Rust bằng cách sử dụng hai dấu gạch chéo, 
+`//`. Rust cũng có một loại nhận xét cụ thể cho tài liệu, được gọi một cách thuận tiện 
+là *chú thích tài liệu*, sẽ tạo ra tài liệu HTML. File HTML
+hiển thị những nội dung của tài liệu cho các API công khaidành cho các lập trình viên 
+quan tâm đến việc biết cách *sử dụng* crate trái ngược với cách crate bạn sử dụng là *implemented*.
+
+Nhận xét tài liệu sử dụng ba dấu gạch chéo, `///`, 
+thay vì hai và hỗ trợ ký hiệu Markdown để định dạng văn bản.
+Đặt các nhận xét về tài liệu ngay trước mục mà chúng đang ghi lại.
+Listing 14-1 hiển thị các nhận xét tài liệu
+cho một hàm `add_one` trong một crate có tên là` my_crate`.
 
 <span class="filename">Filename: src/lib.rs</span>
 
@@ -32,47 +33,43 @@ for an `add_one` function in a crate named `my_crate`.
 {{#rustdoc_include ../listings/ch14-more-about-cargo/listing-14-01/src/lib.rs}}
 ```
 
-<span class="caption">Listing 14-1: A documentation comment for a
-function</span>
+<span class="caption">Listing 14-1: Nhận xét về tài liệu cho một
+hàm số</span>
 
-Here, we give a description of what the `add_one` function does, start a
-section with the heading `Examples`, and then provide code that demonstrates
-how to use the `add_one` function. We can generate the HTML documentation from
-this documentation comment by running `cargo doc`. This command runs the
-`rustdoc` tool distributed with Rust and puts the generated HTML documentation
-in the *target/doc* directory.
+Ở đây, chúng ta đưa ra mô tả về chức năng của hàm `add_one`, bắt đầu với tiêu
+đề `Examples`, và sau đó cung cấp đoạn code thể hiện làm thế nào để thực hiện 
+hàm `add_one`. Chúng ta có thể tạo ra tài liệu HTML từ tài liệu này bằng cách chạy 
+lệnh `cargo doc`. Lệnh này chạy công cụ `rustdoc` được cung cấp với Rust 
+và đặt file HTML được tạo ra ở thư mục *target/doc*.
 
-For convenience, running `cargo doc --open` will build the HTML for your
-current crate’s documentation (as well as the documentation for all of your
-crate’s dependencies) and open the result in a web browser. Navigate to the
-`add_one` function and you’ll see how the text in the documentation comments is
-rendered, as shown in Figure 14-1:
+Để thuận tiện, chạy lệnh `cargo doc --open` sẽ xây dựng file HTML cho tài liệu của crate
+ hiện tại (cũng như tài liệu cho tất cả các phần phụ thuộc của crate) 
+và mở kết quả trên một trình duyệt web. 
+Điều hướng đến hàm `add_one`  và bạn sẽ thấy đoạn văn bản trong tài liệu được hiển thị như
+thế nào, như được hiển thị trong Figure 14-1:
 
 <img alt="Rendered HTML documentation for the `add_one` function of `my_crate`" src="img/trpl14-01.png" class="center" />
 
-<span class="caption">Figure 14-1: HTML documentation for the `add_one`
-function</span>
+<span class="caption">Figure 14-1: Tài liệu cho hàm `add_one`</span>
 
-#### Commonly Used Sections
+#### Các phần thường được sử dụng
 
-We used the `# Examples` Markdown heading in Listing 14-1 to create a section
-in the HTML with the title “Examples.” Here are some other sections that crate
-authors commonly use in their documentation:
+Chúng ta sử dụng tiêu đề Markdown `# Examples` trong Listing 14-1 
+để tạo một phần trong HTML với tiêu đề là “Examples.” 
+Dưới đây là một số phần khác thường được các tác giả sử dụng trong tài liệu của họ:
 
-* **Panics**: The scenarios in which the function being documented could
-  panic. Callers of the function who don’t want their programs to panic should
-  make sure they don’t call the function in these situations.
-* **Errors**: If the function returns a `Result`, describing the kinds of
-  errors that might occur and what conditions might cause those errors to be
-  returned can be helpful to callers so they can write code to handle the
-  different kinds of errors in different ways.
-* **Safety**: If the function is `unsafe` to call (we discuss unsafety in
-  Chapter 19), there should be a section explaining why the function is unsafe
-  and covering the invariants that the function expects callers to uphold.
+* **Panics**: Các tình huống trong hàm mà có thể xảy ra panic. 
+Những người gọi hàm không muốn chương trình của họ bị panic nên sẽ không gọi vào các trường hợp này.
+* **Errors**: Nếu kết quả của hàm trả về `Result`, miêu tả các loại lỗi
+có thể xảy ra và những điều kiện nào có thể gây ra các lỗi đó để trả về
+có thể giúp ích cho người gọi hàm để họ có thể viết code xử lý các trường hợp của lỗi theo các cách khác nhau.
+* **Safety**: Nếu hàm là `unsafe` để gọi (chúng ta thảo luận unsafety ở
+  Chương 19), nên có 1 phần giải thích tại sao hàm lại unsafe
+  và bao gồm các bất biến trong hàm mong người gọi giữ nguyên.
 
-Most documentation comments don’t need all of these sections, but this is a
-good checklist to remind you of the aspects of your code that people calling
-your code will be interested in knowing about.
+Hầu hết các lệnh về tài liệu không cần tất cả các phần này, nhưng đây là một
+checklist tốt để nhắc nhở bạn về các khía cạnh mã code của bạn mà những người
+gọi hàm sẽ muốn biết khi sử dụng chúng.
 
 #### Documentation Comments as Tests
 
